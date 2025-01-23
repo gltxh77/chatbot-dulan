@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Museum - Malang Raya</title>
+  <link rel="stylesheet" href="css/styles.css">
+  
+</head>
+<body>
+  <h1 style="text-align: center;">Chat Museum - Malang Raya</h1>
+  <div id="chat-container">
+    <div id="chatbox"></div>
+    <div id="typing-indicator">Bot sedang mengetik...</div>
+    <textarea id="userPrompt" placeholder="Tulis pertanyaan Anda di sini..."></textarea>
+    <button onclick="sendPrompt()">Kirim</button>
+    <div id="suggested-questions"></div>
+  </div>
+
+  <script>
+    // Data pertanyaan pilihan
+    document.addEventListener("DOMContentLoaded", async () => {
+      const context = "museum"; // Ganti dengan "coban" atau "museum" di halaman lain
+      const suggestedQuestionsDiv = document.getElementById("suggested-questions");
+
+      try {
+    // Fetch pertanyaan dari server
+        const response = await fetch("/generate-questions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ context }),
+        });
+
+        const data = await response.json();
+        const questions = data.questions;
+    
+    // Tampilkan pertanyaan di UI
+        suggestedQuestionsDiv.innerHTML = questions
+          .map(
+            (q) =>
+              `<button onclick="setPrompt('${q}')">${q}</button>`
+          )
+          .join("");
+      } catch (error) {
+        console.error("Gagal memuat pertanyaan:", error);
+        suggestedQuestionsDiv.innerHTML = "<p>Gagal memuat pertanyaan.</p>";
+      }
+    });
+    
+    // Memasukan pertanyaan kedalam textarea prompt
+    function setPrompt(question) {
+      const userInput = document.getElementById("userPrompt");
+      userInput.value = question;
+    }
+
+    // Menambahkan pesan ke chatbox
+    function addMessage(content, isUser) {
+      const chatbox = document.getElementById("chatbox");
+      const bubble = document.createElement("div");
+      bubble.className = `bubble ${isUser ? "user" : "bot"}`;
+      bubble.textContent = content;
+      chatbox.appendChild(bubble);
+      chatbox.scrollTop = chatbox.scrollHeight; // Scroll otomatis ke bawah
+    }
+
+    // Tampilkan tulisan bot sedang mengetik
+    function showTypingIndicator(show) {
+      const typingIndicator = document.getElementById("typing-indicator");
+      typingIndicator.style.display = show ? "block" : "none";
+    }
+
+    // Fungsi untuk mengirim prompt ke server
+    async function sendPrompt() {
+      const prompt = document.getElementById("userPrompt").value;
+      if (!prompt) return; // Jangan kirim jika input kosong
+
+      addMessage(prompt, true); // Tambahkan pesan pengguna
+      document.getElementById("userPrompt").value = ""; // Kosongkan input
+
+      showTypingIndicator(true); // Tampilkan tulisan bot sedang mengetik
+      try {
+        const response = await fetch("/chat-museum", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt }),
+        });
+
+        const data = await response.json();
+        showTypingIndicator(false); // Sembunyikan tulisan bot sedang mengetik
+        addMessage(data.reply, false); // Tambahkan balasan bot
+      } catch (error) {
+        showTypingIndicator(false);
+        addMessage("Terjadi kesalahan, silakan coba lagi.", false);
+      }
+    }
+
+    // Set pertanyaan pilihan saat laman dimuat
+    document.addEventListener("DOMContentLoaded", setSuggestedQuestions);
+  </script>
+</body>
+</html>

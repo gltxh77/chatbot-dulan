@@ -1,0 +1,135 @@
+/* styles.css */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  height: 100%;
+  overflow-y: auto; /* Scroll hanya pada seluruh halaman */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f9f9;
+}
+
+#chat-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#chatbox {
+  width: 96%;
+  max-width: 600px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: visible; /* Pastikan overflow diatur ke visible */
+  height: auto; /* Izinkan tinggi berkembang sesuai konten */
+  max-height: none; /* Hilangkan batas tinggi maksimal */
+}
+
+
+.bubble {
+  padding: 10px 15px;
+  margin: 10px 0;
+  border-radius: 15px;
+  font-size: 14px;
+  line-height: 1.5;
+  width: fit-content;
+  max-width: 80%;
+}
+
+.bubble.user {
+  background-color: #007bff;
+  color: white;
+  margin-left: auto;
+  text-align: right;
+}
+
+.bubble.bot {
+  background-color: #e9ecef;
+  color: black;
+  margin-right: auto;
+}
+
+#typing-indicator {
+  display: none;
+  font-size: 14px;
+  color: gray;
+  margin: 10px 0;
+  text-align: left;
+}
+
+textarea {
+  width: 96%;
+  height: 50px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+#suggested-questions {
+    display: flex; /* Gunakan Flexbox */
+    justify-content: space-between; /* Ruang antar tombol */
+    flex-wrap: wrap; /* Izinkan tombol beralih ke baris baru jika tidak cukup ruang */
+    gap: 10px; /* Jarak antar tombol */
+    margin-top: 10px;
+  }
+
+  #suggested-questions button {
+    flex: 1 1 calc(33.33% - 10px); /* Atur lebar tombol */
+    text-align: center;
+    padding: 10px;
+    margin: 0;
+    background: #2a517b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  #suggested-questions button:hover {
+    background: #0056b3;
+  }
+
+  .questions-container button {
+    display: inline-block;
+    margin: 5px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .questions-container button:hover {
+    background-color: #0056b3;
+  }  
