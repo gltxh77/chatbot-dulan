@@ -9,9 +9,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // API Key dari .env
-});
+const openai = new OpenAIApi(
+  new Configuration({
+    apiKey: process.env.OPENAI_API_KEY, // Use the API key from environment variables
+  })
+);
 
 // Route untuk menyajikan halaman Pantai
 app.get("/chat-pantai", (req, res) => {
